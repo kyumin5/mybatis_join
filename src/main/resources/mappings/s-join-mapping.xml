@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="s-join">
+
+<resultMap type="s_emp" id="s_empMap">
+	<id property="empno" column ="EMPNO"/>
+	<result property="ename" column ="ENAME"/>
+	<result property="sal" column ="SAL"/>
+	<result property="deptno" column ="DEPTNO"/>
+</resultMap>
+
+<resultMap type="s_dept" id="s_deptMap">
+	<id property="deptno" column ="DEPTNO"/>
+	<result property="dname" column ="DNAME"/>
+	<result property="loc" column ="LOC"/>
+
+</resultMap>
+
+
+<resultMap type="s_joinvo" id="s_joinMap">
+	<collection property="spring_emp" resultMap="s_empMap"></collection>
+	<collection property="spring_dept" resultMap="s_deptMap"></collection>
+</resultMap>
+
+
+<select id="selectListJoin" resultMap="s_joinMap">
+
+		<![CDATA[
+		SELECT E.EMPNO, E.ENAME,E.SAL, D.DEPTNO, D.DNAME, D.LOC
+		FROM SPRING_EMPLOYMENT E, SPRING_DEPARTMENT D
+		WHERE E.DEPTNO = D.DEPTNO
+		]]>
+
+</select>
+
+
+
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Join">
+
+<resultMap type="emp" id="empMap">
+	<id property="eno" column ="ENO"/>
+	<result property="ename" column ="ENAME"/>
+	<result property="job" column ="JOB"/>
+	<result property="manager" column ="MANAGER"/>
+	<result property="hiredate" column ="HIREDATE"/>
+	<result property="salary" column ="SALARY"/>
+	<result property="commission" column ="COMMISSION"/>
+	<result property="dno" column ="DNO"/>
+<!--  	<collection property="dept" resultMap="deptMap"></collection>-->
+</resultMap>
+
+<resultMap type="dept" id="deptMap">
+	<id property="dno" column ="DNO"/>
+	<result property="dname" column ="DNAME"/>
+	<result property="loc" column ="LOC"/>
+
+</resultMap>
+
+<!--  두 ResultMap을 처리하는 ResultMap -->
+
+<resultMap type="joinvo" id="joinMap">
+	<collection property="empJ" resultMap="empMap"></collection>
+	<collection property="deptJ" resultMap="deptMap"></collection>
+</resultMap>
+
+<!-- //////////////////////////////////////////////////////// -->
+
+<resultMap type="deptsVO" id="deptsmap">
+	<id property="department_id" column ="DEPARTMENT_ID"/>
+	<result property="department_name" column ="DEPARTMENT_NAME"/>
+	<result property="manager_id" column ="MANAGER_ID"/>
+	<result property="location_id" column ="LOCATION_ID"/>
+</resultMap>
+
+
+<resultMap type="empsVO" id="empsmap">
+	<id property="employee_id" column ="EMPLOYEE_ID"/>
+	<result property="first_name" column ="FIRST_NAME"/>
+	<result property="last_name" column ="LAST_NAME"/>
+	<result property="email" column ="EMAIL"/>
+	<result property="phone_number" column ="PHONE_NUMBER"/>
+	<result property="hire_date" column ="HIRE_DATE"/>
+	<result property="job_id" column ="JOB_ID"/>
+	<result property="salary" column ="SALARY"/>
+	<result property="commission_pct" column ="COMMISSION_PCT"/>
+	<result property="manager_id" column ="MANAGER_ID"/>
+	<result property="department_id" column ="DEPARTMENT_ID"/>
+</resultMap>
+
+<resultMap type="jobhVO" id="jobhmap">
+	<id property="employee_id" column ="EMPLOYEE_ID"/>
+	<result property="start_date" column ="START_DATE"/>
+	<result property="end_date" column ="END_DATE"/>
+	<result property="job_id" column ="JOB_ID"/>
+	<result property="department_id" column ="DEPARTMENT_ID"/>
+</resultMap>
+
+<resultMap type="locationVO" id="locationmap">
+	<id property="location_id" column ="LOCATION_ID"/>
+	<result property="street_address" column ="STREET_ADDRESS"/>
+	<result property="postal_code" column ="POSTAL_CODE"/>
+	<result property="city" column ="CITY"/>
+	<result property="state_province" column ="STATE_PROVINCE"/>
+	<result property="country_id" column ="COUNTRY_ID"/>
+</resultMap>
+
+
+
+
+
+<resultMap type="allJoinVO" id="allJoinmap">
+	<collection property="detpsVO" resultMap="deptsmap"></collection>
+	<collection property="empsVO" resultMap="empsmap"></collection>
+	<collection property="jobhVO" resultMap="jobhmap"></collection>
+	<collection property="locVO" resultMap="locationmap"></collection>
+
+
+</resultMap>
+
+
+<select id="selectOneJoin" resultMap="joinMap">
+
+		<![CDATA[
+		
+		]]>
+
+
+</select>
+<select id="selectListJoin" resultMap="joinMap">
+
+		<![CDATA[
+		
+		SELECT E.ENO, E.ENAME, E.JOB, E.MANAGER, E.HIREDATE, E.SALARY, E.COMMISSION, D.DNO, D.DNAME, D.LOC
+		FROM EMPLOYEE E, DEPARTMENT D
+		WHERE E.DNO = D.DNO
+		
+		]]>
+
+</select>
+
+<select id="selectListJoin2" resultMap="allJoinmap">
+
+		<![CDATA[
+		SELECT
+		E.EMPLOYEE_ID,E.FIRST_NAME,E.LAST_NAME,E.EMAIL,E.PHONE_NUMBER,E.HIRE_DATE,E.JOB_ID,E.SALARY,E.COMMISSION_PCT,E.MANAGER_ID,
+		E.DEPARTMENT_ID,D.DEPARTMENT_NAME,D.LOCATION_ID,l.STREET_ADDRESS,l.POSTAL_CODE,l.CITY,l.STATE_PROVINCE,l.COUNTRY_ID,
+		J.START_DATE,J.END_DATE	
+		FROM EMPLOYEES E, DEPARTMENTS D, LOCATIONS L, JOB_HISTORY J
+		WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID
+		AND D.LOCATION_ID = L.LOCATION_ID
+		AND J.JOB_ID = E.JOB_ID
+		
+		]]>
+
+</select>
+
+<select id="selectListJoin3" resultType="allJoinVO">
+
+		<![CDATA[
+		
+		SELECT
+		E.EMPLOYEE_ID,E.FIRST_NAME,E.LAST_NAME,E.EMAIL,E.PHONE_NUMBER,E.HIRE_DATE,E.JOB_ID,E.SALARY,E.COMMISSION_PCT,E.MANAGER_ID,
+		E.DEPARTMENT_ID,D.DEPARTMENT_NAME,D.LOCATION_ID,l.STREET_ADDRESS,l.POSTAL_CODE,l.CITY,l.STATE_PROVINCE,l.COUNTRY_ID,
+		J.START_DATE,J.END_DATE	
+		FROM EMPLOYEES E, DEPARTMENTS D, LOCATIONS L, JOB_HISTORY J
+		WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID
+		AND D.LOCATION_ID = L.LOCATION_ID
+		AND J.JOB_ID = E.JOB_ID
+		
+		]]>
+
+</select>
+
+
+
+</mapper>
